@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.container {
+    min-height: 100vh;
+    background: url('./Images/bg.jpg') no-repeat center, #030728;
+    background-size: cover;
+}
+
+.slider {
+    overflow: hidden;
+    max-width: 1200px;
+    margin: 0 auto 55px;
+}
+
+.list {
+    display: flex;
+    gap: 20px;
+    padding: 60px 0 0;
+}
+
+.item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+    padding: 35px;
+    user-select: none;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(30px);
+    color: #fff;
+}
+
+.item img {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    padding: 4px;
+    margin-bottom: 40px;
+}
+
+.item p {
+    font-size: 16px;
+    font-weight: 500;
+    color: #e3e3e3;
+    margin: 14px 0 40px;
+}
+
+.item button {
+    padding: 10px 35px;
+    border-radius: 5px;
+    color: #030728;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    background-color: #fff;
+    border: none;
+    outline: none;
+    transition: 0.3s ease;
+}
+
+.item button:hover {
+    color: #fff;
+    background-color: transparent;
+    border: 1px solid #fff;
+}
+
+.swiper-horizontal > .swiper-pagination-bullets,
+.swiper-pagination-bullets.swiper-pagination-horizontal,
+.swiper-pagination-custom,
+.swiper-pagination-fraction {
+    bottom: var(--swiper-pagination-bottom, auto);
+}
+
+.slider .swiper-pagination-bullet {
+    background: #fff !important;
+    width: 15px;
+    height: 15px;
+}
+
+.swiper-pagination-bullet-active {
+    background: #fff !important;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+    color: #fff !important;
+    margin-top: -50px;
+    transition: 0.2s ease;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+    color: #4685ff !important;
+}
+
+@media screen and (max-width: 768px) {
+    .slider {
+        margin: 0 10px 40px;
+    }
+    .swiper-button-next,
+    .swiper-button-prev {
+        display: none !important;
+    }
+    .item {
+        width: 100% !important;
+    }
+}
