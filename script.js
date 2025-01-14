@@ -10,14 +10,14 @@ let currentDot = 0;
 
 // Function to update the number of visible items and scroll step based on screen width
 function updateVisibleItemsAndScrollStep() {
-    const totalItems = slider.children.length - 1; // Subtract 2 to ignore prev/next buttons
+    const totalItems = slider.children.length - 2; // Subtract 2 to ignore prev/next buttons
 
     if (window.innerWidth >= 1024) {
         visibleItems = 3;  // 3 items on larger screens
-        scrollStep = 980;  // Adjust based on card width
+        scrollStep = 990;  // Adjust based on card width
     } else if (window.innerWidth >= 768) {
         visibleItems = 2;  // 2 items on medium screens
-        scrollStep = 670;  // Adjust based on card width
+        scrollStep = 680;  // Adjust based on card width
     } else {
         visibleItems = 1;  // 1 item on smaller screens
         scrollStep = 320;  // Adjust based on card width
