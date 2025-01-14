@@ -1,118 +1,122 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&display=swap');
-
-* {
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+*{
     box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-    font-family: 'Montserrat', sans-serif;
+    padding: 0px;
+    margin: 0px;
+    border: none;
+    font-family: "Montserrat", serif;
 }
-
-.container {
-    min-height: 100vh;
-    background: url('./Images/bg.jpg') no-repeat center, #030728;
-    background-size: cover;
-}
-
-.slider {
-    overflow: hidden;
-    max-width: 1200px;
-    margin: 0 auto 55px;
-}
-
-.list {
-    display: flex;
-    gap: 20px;
-    padding: 60px 0 0;
-}
-
-.item {
+.container{
+    background: url('./Images/bg.jpg') no-repeat center #030728;
     display: flex;
     justify-content: center;
     align-items: center;
-    text-align: center;
     flex-direction: column;
+    color: #fff;
+    text-align: center;
+    min-height: 100vh;
+}
+.slider{
+    display: flex;
+    overflow-x: auto;
+    gap: 20px;
     padding: 35px;
-    user-select: none;
-    border-radius: 8px;
+    scroll-behavior: smooth;
+    width: 96%;
+    cursor: grab;
+}
+.slider::-webkit-scrollbar{
+    display: none;
+}
+.item{
+    flex: 0 0 auto;
     background-color: rgba(255, 255, 255, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.5);
-    backdrop-filter: blur(30px);
-    color: #fff;
+    padding: 35px;
+    backdrop-filter: blur(30);
+    border-radius: 8px;
+    width: 300px;
+    min-width: 350px;
 }
-
-.item img {
-    width: 140px;
-    height: 140px;
+.item img{
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
-    border: 3px solid #fff;
-    padding: 4px;
-    margin-bottom: 40px;
+    border: 1px solid #fff;
+    padding: 2px;
+    margin-bottom: 20px;
 }
-
-.item p {
-    font-size: 16px;
+.item h2{
+    font-size: 24px;
+    margin: 10px 0px;
     font-weight: 500;
-    color: #e3e3e3;
-    margin: 14px 0 40px;
 }
-
-.item button {
-    padding: 10px 35px;
+.item p{
+    font-size: 16px;
+    color: #e3e3e3;
+    margin: 5px 0px;
+    font-weight: 500;
+}
+.item button{
+    padding: 10px 25px;
     border-radius: 5px;
     color: #030728;
+    border: 1px solid transparent;
     font-size: 14px;
-    font-weight: 500;
     cursor: pointer;
-    background-color: #fff;
-    border: none;
-    outline: none;
-    transition: 0.3s ease;
+    margin-top: 10px;
+    transition: 0.4s ease;
 }
-
-.item button:hover {
+.item button:hover{
     color: #fff;
-    background-color: transparent;
     border: 1px solid #fff;
+    background: transparent;
 }
-
-.swiper-horizontal > .swiper-pagination-bullets,
-.swiper-pagination-bullets.swiper-pagination-horizontal,
-.swiper-pagination-custom,
-.swiper-pagination-fraction {
-    bottom: var(--swiper-pagination-bottom, auto);
+.btn{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 24px;
+    padding: 10px 20px;
+    cursor: pointer;
+    color: #fff;
+    transition: color 0.3s;
 }
-
-.slider .swiper-pagination-bullet {
-    background: #fff !important;
-    width: 15px;
-    height: 15px;
+.btn:hover{
+    color: #283291;
 }
-
-.swiper-pagination-bullet-active {
-    background: #fff !important;
+.prev{
+    left: 10px;
 }
-
-.swiper-button-next,
-.swiper-button-prev {
-    color: #fff !important;
-    margin-top: -50px;
-    transition: 0.2s ease;
+.next{
+    right: 10px;
 }
-
-.swiper-button-next:hover,
-.swiper-button-prev:hover {
-    color: #4685ff !important;
+.pagination{
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    gap: 2px;
 }
-
-@media screen and (max-width: 768px) {
-    .slider {
-        margin: 0 10px 40px;
+.dot{
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.dot.active{
+    background-color: #fff;
+}
+@media screen and (max-width : 768px) {
+    .slider{
+        margin: 0 10px 20px;
+        padding: 10px;
     }
-    .swiper-button-next,
-    .swiper-button-prev {
-        display: none !important;
+    .item{
+        min-width: 300px;
     }
-    .item {
-        width: 100% !important;
+    .btn{
+        display: none;
     }
 }
