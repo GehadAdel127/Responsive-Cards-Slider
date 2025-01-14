@@ -17,7 +17,7 @@ function updateVisibleItemsAndScrollStep() {
         scrollStep = 980;  // Adjust based on card width
     } else if (window.innerWidth >= 768) {
         visibleItems = 2;  // 2 items on medium screens
-        scrollStep = 640;  // Adjust based on card width
+        scrollStep = 670;  // Adjust based on card width
     } else {
         visibleItems = 1;  // 1 item on smaller screens
         scrollStep = 320;  // Adjust based on card width
