@@ -3,16 +3,12 @@ const prevBtn = document.querySelector('.prev');
 const nextBtn = document.querySelector('.next');
 const pagination = document.querySelector('.pagination');
 
-let autoScrollInterval;
-let visibleItems = 3;
-let scrollStep = 960;
-let currentDot = 0;
+let autoScrollInterval, visibleItems = 3, scrollStep = 960, currentDot = 0;
 
 function updateVisibleItemsAndScrollStep() {
     const totalItems = slider.children.length - 2;
     const itemWidth = document.querySelector('.item').offsetWidth;
-    const sliderStyles = window.getComputedStyle(slider);
-    const gap = parseInt(sliderStyles.gap) || 0;
+    const gap = parseInt(window.getComputedStyle(slider).gap) || 0;
 
     if (window.innerWidth >= 900) {
         visibleItems = 3;
@@ -24,50 +20,35 @@ function updateVisibleItemsAndScrollStep() {
         visibleItems = 1;
         scrollStep = itemWidth + gap;
     }
-
-    createPaginationDots(totalItems);
+    createPaginationDots(Math.ceil(totalItems / visibleItems));
 }
 
-function createPaginationDots(totalItems) {
-    const totalSteps = Math.ceil(totalItems / visibleItems);
+function createPaginationDots(totalSteps) {
     pagination.innerHTML = '';
-
     for (let i = 0; i < totalSteps; i++) {
         const dot = document.createElement('span');
-        dot.classList.add('dot');
-        if (i === currentDot) {
-            dot.classList.add('active');
-        }
-
+        dot.className = `dot${i === currentDot ? ' active' : ''}`;
         dot.addEventListener('click', () => {
             currentDot = i;
             slider.scrollLeft = i * scrollStep;
             updatePagination(totalSteps);
-            stopAutoScroll();
-            startAutoScroll();
+            restartAutoScroll();
         });
-
         pagination.appendChild(dot);
     }
 }
 
 function updatePagination(totalSteps) {
-    const maxScroll = totalSteps - 1;
-    currentDot = Math.min(maxScroll, Math.floor(slider.scrollLeft / scrollStep));
-    document.querySelectorAll('.dot').forEach((dot, i) => {
-        dot.classList.toggle('active', i === currentDot);
-    });
+    currentDot = Math.min(totalSteps - 1, Math.floor(slider.scrollLeft / scrollStep));
+    document.querySelectorAll('.dot').forEach((dot, i) =>
+        dot.classList.toggle('active', i === currentDot)
+    );
 }
 
 function startAutoScroll() {
     stopAutoScroll();
     autoScrollInterval = setInterval(() => {
-        const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
-        if (slider.scrollLeft >= maxScrollLeft) {
-            slider.scrollLeft = 0;
-        } else {
-            slider.scrollBy({ left: scrollStep, behavior: 'smooth' });
-        }
+        slider.scrollBy({ left: slider.scrollLeft >= slider.scrollWidth - slider.clientWidth ? -slider.scrollLeft : scrollStep, behavior: 'smooth' });
     }, 4000);
 }
 
@@ -75,28 +56,20 @@ function stopAutoScroll() {
     clearInterval(autoScrollInterval);
 }
 
-prevBtn.addEventListener('click', () => {
-    slider.scrollBy({ left: -scrollStep, behavior: 'smooth' });
-});
+function restartAutoScroll() {
+    stopAutoScroll();
+    startAutoScroll();
+}
 
-nextBtn.addEventListener('click', () => {
-    slider.scrollBy({ left: scrollStep, behavior: 'smooth' });
-});
-
-slider.addEventListener('scroll', () => {
-    const totalItems = slider.children.length - 2;
-    const totalSteps = Math.ceil(totalItems / visibleItems);
-    updatePagination(totalSteps);
-});
-
+prevBtn.addEventListener('click', () => slider.scrollBy({ left: -scrollStep, behavior: 'smooth' }));
+nextBtn.addEventListener('click', () => slider.scrollBy({ left: scrollStep, behavior: 'smooth' }));
+slider.addEventListener('scroll', () => updatePagination(Math.ceil((slider.children.length - 2) / visibleItems)));
 slider.addEventListener('mouseover', stopAutoScroll);
 slider.addEventListener('mouseleave', startAutoScroll);
 
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowRight') {
-        slider.scrollBy({ left: scrollStep, behavior: 'smooth' });
-    } else if (e.key === 'ArrowLeft') {
-        slider.scrollBy({ left: -scrollStep, behavior: 'smooth' });
+document.addEventListener('keydown', ({ key }) => {
+    if (key === 'ArrowRight' || key === 'ArrowLeft') {
+        slider.scrollBy({ left: key === 'ArrowRight' ? scrollStep : -scrollStep, behavior: 'smooth' });
     }
 });
 
