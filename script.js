@@ -4,32 +4,33 @@ const nextBtn = document.querySelector('.next');
 const pagination = document.querySelector('.pagination');
 
 let autoScrollInterval;
-let visibleItems = 3;  // Default: 3 items for larger screens
-let scrollStep = 960;  // Default scroll step for large screens
+let visibleItems = 3;
+let scrollStep = 960;
 let currentDot = 0;
 
-// Function to update the number of visible items and scroll step based on screen width
 function updateVisibleItemsAndScrollStep() {
-    const totalItems = slider.children.length - 2; // Subtract 2 to ignore prev/next buttons
+    const totalItems = slider.children.length - 2;
+    const itemWidth = document.querySelector('.item').offsetWidth;
+    const sliderStyles = window.getComputedStyle(slider);
+    const gap = parseInt(sliderStyles.gap) || 0;
 
-    if (window.innerWidth >= 1024) {
-        visibleItems = 3;  // 3 items on larger screens
-        scrollStep = 960;  // Adjust based on card width
-    } else if (window.innerWidth >= 768) {
-        visibleItems = 2;  // 2 items on medium screens
-        scrollStep = 640;  // Adjust based on card width
+    if (window.innerWidth >= 900) {
+        visibleItems = 3;
+        scrollStep = (itemWidth * 3) + (gap * 2);
+    } else if (window.innerWidth >= 600) {
+        visibleItems = 2;
+        scrollStep = (itemWidth * 2) + (gap * 2) + 15;
     } else {
-        visibleItems = 1;  // 1 item on smaller screens
-        scrollStep = 320;  // Adjust based on card width
+        visibleItems = 1;
+        scrollStep = itemWidth + gap;
     }
 
     createPaginationDots(totalItems);
 }
 
-// Adjust the number of dots based on visible items
 function createPaginationDots(totalItems) {
-    const totalSteps = Math.ceil(totalItems / visibleItems); // Correctly calculate total steps
-    pagination.innerHTML = ''; // Clear existing dots
+    const totalSteps = Math.ceil(totalItems / visibleItems);
+    pagination.innerHTML = '';
 
     for (let i = 0; i < totalSteps; i++) {
         const dot = document.createElement('span');
@@ -38,10 +39,9 @@ function createPaginationDots(totalItems) {
             dot.classList.add('active');
         }
 
-        // Add click event listener to jump to the corresponding item set
         dot.addEventListener('click', () => {
             currentDot = i;
-            slider.scrollLeft = i * scrollStep; // Scroll to the corresponding set
+            slider.scrollLeft = i * scrollStep;
             updatePagination(totalSteps);
             stopAutoScroll();
             startAutoScroll();
@@ -51,55 +51,48 @@ function createPaginationDots(totalItems) {
     }
 }
 
-// Update dot status as user scrolls
 function updatePagination(totalSteps) {
     const maxScroll = totalSteps - 1;
-    currentDot = Math.min(maxScroll, Math.floor(slider.scrollLeft / scrollStep)); // Update currentDot
+    currentDot = Math.min(maxScroll, Math.floor(slider.scrollLeft / scrollStep));
     document.querySelectorAll('.dot').forEach((dot, i) => {
         dot.classList.toggle('active', i === currentDot);
     });
 }
 
-// Start auto-scroll with fixed intervals
 function startAutoScroll() {
-    stopAutoScroll(); // Ensure no duplicate intervals
+    stopAutoScroll();
     autoScrollInterval = setInterval(() => {
         const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
         if (slider.scrollLeft >= maxScrollLeft) {
-            slider.scrollLeft = 0;  // Reset to start
+            slider.scrollLeft = 0;
         } else {
             slider.scrollBy({ left: scrollStep, behavior: 'smooth' });
         }
     }, 4000);
 }
 
-// Stop auto-scroll
 function stopAutoScroll() {
     clearInterval(autoScrollInterval);
 }
 
-// Add event listeners for prev/next buttons
-prevBtn.addEventListener('click', function () {
+prevBtn.addEventListener('click', () => {
     slider.scrollBy({ left: -scrollStep, behavior: 'smooth' });
 });
 
-nextBtn.addEventListener('click', function () {
+nextBtn.addEventListener('click', () => {
     slider.scrollBy({ left: scrollStep, behavior: 'smooth' });
 });
 
-// Listen for scroll events to update pagination
-slider.addEventListener('scroll', function () {
-    const totalItems = slider.children.length - 2; // Subtract 2 for buttons
+slider.addEventListener('scroll', () => {
+    const totalItems = slider.children.length - 2;
     const totalSteps = Math.ceil(totalItems / visibleItems);
     updatePagination(totalSteps);
 });
 
-// Handle mouse hover to stop auto-scroll
 slider.addEventListener('mouseover', stopAutoScroll);
 slider.addEventListener('mouseleave', startAutoScroll);
 
-// Handle keyboard navigation
-document.addEventListener('keydown', function (e) {
+document.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowRight') {
         slider.scrollBy({ left: scrollStep, behavior: 'smooth' });
     } else if (e.key === 'ArrowLeft') {
@@ -107,7 +100,6 @@ document.addEventListener('keydown', function (e) {
     }
 });
 
-// Initialize slider settings on load
 window.addEventListener('resize', updateVisibleItemsAndScrollStep);
 updateVisibleItemsAndScrollStep();
 startAutoScroll();
